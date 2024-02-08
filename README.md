@@ -4,18 +4,25 @@
 API RESTful para gerenciar a lista de indicados e vencedores da categoria Pior Filme do Golden Raspberry Awards.
 
 <h2>Para executar o projeto, será necessário instalar os seguintes programas:</h2>
+
 - JDK 17: Necessário para executar o projeto Java
+
 - Maven 3.5.3: Necessário para realizar o build do projeto Java
+ 
 - IDE(Eclipse/Intellij): Para desenvolvimento do projeto
 
 <h2>Para iniciar o desenvolvimento, é necessário clonar o projeto do GitHub num diretório de sua preferência:</h2>
+
 - cd "diretorio de sua preferencia"
+
 - git clone https://github.com/williamsfalcao/goldenraspberryawards
 
 <h2>Para construir o projeto com o Maven, executar os comando abaixo:</h2>
+
 - mvn clean install
 
 <h2>Para rodar os testes, utilize o comando abaixo:</h2>
+
 - mvn test
 
 <h2>Executando a aplicação</h2>
@@ -28,6 +35,7 @@ Quando a aplicação estive startada esse será o seu PATH: http://localhost:808
 A aplicação utiliza um banco de dados em memoria (H2) que é carregado a partir de um arquivo csv que esta na raiz do projeto contendo uma lista de produções.
 
 Podemos acessar ao console do banco através do seguindo endereço:
+
 - PATH + /h2-console
 
 Obs - Você pode alterar essa caminho dentro do arquivo "application.yml" que fica na pasta resource da aplicação.
@@ -35,7 +43,9 @@ Obs - Você pode alterar essa caminho dentro do arquivo "application.yml" que fi
 ![image](https://github.com/williamsfalcao/goldenraspberryawards/assets/25464585/47b07e10-6015-41ae-9bdc-305d458e9ea3)
 
 Preencha os campos conforme dados abaixo e clique em conectar.
+
 - JDBC URL: jdbc:h2:mem:testdb
+  
 - USER NAME: sa
   
 Obs - Você pode alterar essas configurações dentro do arquivo "application.yml" que fica na pasta resource da aplicação.
