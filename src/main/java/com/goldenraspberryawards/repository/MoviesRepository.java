@@ -9,15 +9,8 @@ import java.util.List;
 public interface MoviesRepository extends JpaRepository<Movie, Long> {
 
     @Query(value = """
-            SELECT * 
-            FROM TB_MOVIES TB 
-            WHERE TB.PRODUCERS IN (
-                    SELECT M.PRODUCERS  
-                    FROM TB_MOVIES M 
-                    WHERE M.WINNER = 'yes' 
-                    GROUP BY M.PRODUCERS 
-                    HAVING COUNT(M.PRODUCERS) >1)
+            SELECT * FROM TB_MOVIES AS TB WHERE TB.WINNER LIKE 'yes' ORDER BY TB.YEAR_AWARD
             """, nativeQuery = true)
-    List<Movie>  getListMobvies();
+    List<Movie>  getWinners();
 
 }

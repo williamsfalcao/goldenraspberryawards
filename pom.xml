@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>com</groupId>
 	<artifactId>goldenraspberryawards</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.1</version>
 	<name>goldenraspberryawards</name>
 	<description>Project Golden Raspberry Awards</description>
 	<properties>
@@ -58,7 +58,7 @@
 		<dependency>
 			<groupId>com.opencsv</groupId>
 			<artifactId>opencsv</artifactId>
-			<version>4.2</version>
+			<version>5.5</version>
 		</dependency>
 		<!-- ModelMapper -->
 		<dependency>

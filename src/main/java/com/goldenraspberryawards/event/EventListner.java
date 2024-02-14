@@ -27,7 +27,7 @@ public class EventListner {
     @EventListener(ContextRefreshedEvent.class)
     private void lerCsv() throws IOException {
         LOGGER.info("Lendo Arquivo CSV.");
-        saveList(FileUtil.lerCsv());
+        saveList(FileUtil.lerCsv("movielist.csv"));
 
     }
 

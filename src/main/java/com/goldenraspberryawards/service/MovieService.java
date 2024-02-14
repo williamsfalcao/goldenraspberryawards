@@ -57,7 +57,7 @@ public class MovieService {
     }
 
     public ResponseDTO listAwards(){
-        List<Movie> listMovies = moviesRepository.getListMobvies();
+        List<Movie> listMovies = moviesRepository.getWinners();
         List<AwardDTO> listAwards = buildListAward(listMovies);
         return buildResponse(listAwards);
     }
@@ -68,22 +68,25 @@ public class MovieService {
         listMoviesAward.forEach(item ->{
             AwardDTO awardDTO = null;
 
-            if(map.containsKey(item.getProducers())){
-                if(item.getYear() > map.get(item.getProducers()).getPreviousWin()){
-                    awardDTO = new AwardDTO();
-                    awardDTO.setProducer(item.getProducers());
-                    awardDTO.setPreviousWin(map.get(item.getProducers()).getPreviousWin());
-                    awardDTO.setFollowingWin(item.getYear());
-                    awardDTO.setInterval(awardDTO.getFollowingWin() - awardDTO.getPreviousWin());
+            if(map.containsKey(item.getStudios())){
+            	awardDTO = map.get(item.getStudios());
+            	if(null != awardDTO.getFollowingWin()){
+            		awardDTO.setPreviousWin(awardDTO.getFollowingWin());
+            		awardDTO.setFollowingWin(item.getYear());
+            		awardDTO.setInterval(awardDTO.getFollowingWin() - awardDTO.getPreviousWin());
                     map.replace(awardDTO.getProducer(),awardDTO);
-                }
-
+            	} else {
+            		awardDTO.setFollowingWin(item.getYear());
+            		awardDTO.setInterval(awardDTO.getFollowingWin() - awardDTO.getPreviousWin());
+                    map.replace(awardDTO.getProducer(),awardDTO);
+            	}
+            	
             } else {
                 awardDTO = new AwardDTO();
-                awardDTO.setProducer(item.getProducers());
+                awardDTO.setProducer(item.getStudios());
                 awardDTO.setPreviousWin(item.getYear());
-                map.put(item.getProducers(), awardDTO);
-            }
+                map.put(item.getStudios(), awardDTO);
+            }            
 
         });
         return new ArrayList<>(map.values());
@@ -97,27 +100,33 @@ public class MovieService {
                 .build();
 
         for (AwardDTO item : listAward) {
-            if (response.getMin().isEmpty()) {
-                response.getMin().add(item);
-            } else {
-                if (response.getMin().get(0).getInterval() > item.getInterval()) {
-                    response.getMin().remove(0);
+        	
+        	if(null != item.getInterval()) {
+        		if (response.getMin().isEmpty()) {
                     response.getMin().add(item);
-                } else if (response.getMin().get(0).getInterval().equals(item.getInterval())) {
-                    response.getMin().add(item);
+                } else {
+                	
+                    if (response.getMin().get(0).getInterval() > item.getInterval()) {
+                        response.getMin().remove(0);
+                        response.getMin().add(item);
+                    } else if (response.getMin().get(0).getInterval().equals(item.getInterval())) {
+                        response.getMin().add(item);
+                    }
                 }
-            }
 
-            if (response.getMax().isEmpty()) {
-                response.getMax().add(item);
-            } else {
-                if (response.getMax().get(0).getInterval() < item.getInterval()) {
-                    response.getMax().remove(0);
+                if (response.getMax().isEmpty()) {
                     response.getMax().add(item);
-                } else if (response.getMax().get(0).getInterval().equals(item.getInterval())) {
-                    response.getMax().add(item);
+                } else {
+                    if (response.getMax().get(0).getInterval() < item.getInterval()) {
+                        response.getMax().remove(0);
+                        response.getMax().add(item);
+                    } else if (response.getMax().get(0).getInterval().equals(item.getInterval())) {
+                        response.getMax().add(item);
+                    }
                 }
-            }
+        	}
+        	
+            
         }
         return response;
     }
