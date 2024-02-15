@@ -37,7 +37,25 @@ public class FileUtil {
         try (CSVReader csvReader = new CSVReaderBuilder(new FileReader(filePath))
                 .withCSVParser(new com.opencsv.CSVParserBuilder().withSeparator(SEPARATOR).build())
                 .build()) {
-            return csvReader.readAll();
+        	
+        	List<String[]> fileCsv = csvReader.readAll();
+        	
+        	if(null == fileCsv) {
+        		throw new RuntimeException("Arquivo não encontrado");
+        	}
+        	
+        	//Arquivo sem conteudo
+        	if(fileCsv.size() < 2) {
+        		throw new RuntimeException("Arquivo sem conteudo."); 
+        	}
+        	
+        	//Arquivo fora do padrão
+        	for (String[] strings : fileCsv) {
+        		if(strings.length != 5) {
+            		throw new RuntimeException("Arquivo fora do padrão."); 
+            	}
+			}
+            return fileCsv;
         }
     }
 }

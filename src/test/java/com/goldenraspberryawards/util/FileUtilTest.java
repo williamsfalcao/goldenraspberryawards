@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.when;
 
 import java.io.IOException;
 import java.util.List;
@@ -19,7 +20,10 @@ class FileUtilTest {
 	private static final String PATH_SUCCESS_02 = "sucesso02.csv";
 	private static final String PATH_ERRO = "erro.csv";
 	private static final String PATH_ERRO_CONVERSION = "movielist_tst.csv";
-	private static final String PATH_INVALID = "invalid.csv";
+	private static final String PATH_NOT_FOUND = "invalid.csv";
+	private static final String PATH_NOT_CONTENT = "notContent.csv";
+	private static final String PATH_NOT_FORMAT = "notFormat.csv";
+	
 
 	@Test
 	void lerCsvTest() {
@@ -75,6 +79,16 @@ class FileUtilTest {
 
 	@Test
 	void testReadCsvFileWithInvalidFilePath() {
-		assertThrows(IOException.class, () -> FileUtil.readCsvFile(PATH_INVALID));
+		assertThrows(IOException.class, () -> FileUtil.readCsvFile(PATH_NOT_FOUND));
+	}
+	
+	@Test
+	void testReadCsvFileNotContent() throws IOException, CsvException {
+		assertThrows(RuntimeException.class, () -> FileUtil.readCsvFile(PATH_NOT_CONTENT));
+	}
+	
+	@Test
+	void testReadCsvFileNotFormat() throws IOException, CsvException {
+		assertThrows(RuntimeException.class, () -> FileUtil.readCsvFile(PATH_NOT_FORMAT));
 	}
 }
