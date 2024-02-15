@@ -77,7 +77,7 @@ Obs - Você pode alterar essas configurações dentro do arquivo "application.ym
                   ]
             }
 
-  <h3>ENDPOINT - Consultar Ganhadores Por Estudio</h3>
+<h3>ENDPOINT - Consultar Ganhadores Por Estudio</h3>
 
 - URL: PATH + /studios
 
