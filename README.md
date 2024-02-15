@@ -52,9 +52,34 @@ Obs - Você pode alterar essas configurações dentro do arquivo "application.ym
 
 <h2>Segue a lista de ENDPOINTs da aplicação:</h2>
 
-<h3>ENDPOINT - Consultar Ganhadores</h3>
+<h3>ENDPOINT - Consultar Ganhadores Por Produtor</h3>
 
-- URL: PATH + /awards
+- URL: PATH + /producers
+
+- METHOD: GET
+  
+- RESPONSE: {
+              "min": [
+                      {
+                        "producer": "string",
+                        "interval": number,
+                        "previousWin": number,
+                        "followingWin": number
+                      }
+                    ],
+            "max": [
+                     {
+                        "producer": "string",
+                        "interval": number,
+                        "previousWin": number,
+                        "followingWin": number
+                    }
+                  ]
+            }
+
+<h3>ENDPOINT - Consultar Ganhadores Por Estudio</h3>
+
+- URL: PATH + /studios
 
 - METHOD: GET
   
