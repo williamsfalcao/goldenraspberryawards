@@ -54,9 +54,16 @@ class MoviesServiceTest {
     }
 
     @Test
-    void listarAwards(){
+    void listarProducers(){
         ResponseDTO response = Mockito.mock(ResponseDTO.class);
-        when(serviceMock.listAwards()).thenReturn(response);
+        when(serviceMock.listProducers()).thenReturn(response);
+        Assertions.assertNotEquals(null,response);
+    }
+    
+    @Test
+    void listarStudios(){
+        ResponseDTO response = Mockito.mock(ResponseDTO.class);
+        when(serviceMock.listStudios()).thenReturn(response);
         Assertions.assertNotEquals(null,response);
     }
 

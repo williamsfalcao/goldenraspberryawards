@@ -9,7 +9,7 @@ import java.util.List;
 public interface MoviesRepository extends JpaRepository<Movie, Long> {
 
     @Query(value = """
-            SELECT * FROM TB_MOVIES AS TB WHERE TB.WINNER LIKE 'yes' ORDER BY TB.YEAR_AWARD
+            SELECT * FROM TB_MOVIES AS TB WHERE TB.WINNER = 'yes' ORDER BY TB.YEAR_AWARD ASC
             """, nativeQuery = true)
     List<Movie>  getWinners();
 

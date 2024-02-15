@@ -56,38 +56,86 @@ public class MovieService {
         }
     }
 
-    public ResponseDTO listAwards(){
+    public ResponseDTO listProducers(){
         List<Movie> listMovies = moviesRepository.getWinners();
-        List<AwardDTO> listAwards = buildListAward(listMovies);
+        List<AwardDTO> listAwards = buildListProducers(listMovies);
+        return buildResponse(listAwards);
+    }
+    
+    public ResponseDTO listStudios(){
+        List<Movie> listMovies = moviesRepository.getWinners();
+        List<AwardDTO> listAwards = buildListStudios(listMovies);
         return buildResponse(listAwards);
     }
 
-    private List<AwardDTO> buildListAward(List<Movie> listMoviesAward){
+    private List<AwardDTO> buildListStudios(List<Movie> listMoviesAward){
         Map<String, AwardDTO> map = new HashMap<>();
 
         listMoviesAward.forEach(item ->{
             AwardDTO awardDTO = null;
+            
+            String[] studio = item.getStudios().replace(" and ", ",").split(",");
+            
+            for (String pr : studio) {
+            	if(map.containsKey(pr)){
+                	awardDTO = map.get(pr);
+                	if(null != awardDTO.getFollowingWin()){
+                		awardDTO.setPreviousWin(awardDTO.getFollowingWin());
+                		awardDTO.setFollowingWin(item.getYear());
+                		awardDTO.setInterval(awardDTO.getFollowingWin() - awardDTO.getPreviousWin());
+                        map.replace(pr,awardDTO);
+                	} else {
+                		awardDTO.setFollowingWin(item.getYear());
+                		awardDTO.setInterval(awardDTO.getFollowingWin() - awardDTO.getPreviousWin());
+                        map.replace(pr,awardDTO);
+                	}
+                	
+                } else {
+                    awardDTO = new AwardDTO();
+                    awardDTO.setProducer(pr);
+                    awardDTO.setPreviousWin(item.getYear());
+                    map.put(pr, awardDTO);
+                }            
 
-            if(map.containsKey(item.getStudios())){
-            	awardDTO = map.get(item.getStudios());
-            	if(null != awardDTO.getFollowingWin()){
-            		awardDTO.setPreviousWin(awardDTO.getFollowingWin());
-            		awardDTO.setFollowingWin(item.getYear());
-            		awardDTO.setInterval(awardDTO.getFollowingWin() - awardDTO.getPreviousWin());
-                    map.replace(awardDTO.getProducer(),awardDTO);
-            	} else {
-            		awardDTO.setFollowingWin(item.getYear());
-            		awardDTO.setInterval(awardDTO.getFollowingWin() - awardDTO.getPreviousWin());
-                    map.replace(awardDTO.getProducer(),awardDTO);
-            	}
-            	
-            } else {
-                awardDTO = new AwardDTO();
-                awardDTO.setProducer(item.getStudios());
-                awardDTO.setPreviousWin(item.getYear());
-                map.put(item.getStudios(), awardDTO);
-            }            
+            }
 
+            
+        });
+        return new ArrayList<>(map.values());
+    }
+    
+    private List<AwardDTO> buildListProducers(List<Movie> listMoviesAward){
+        Map<String, AwardDTO> map = new HashMap<>();
+
+        listMoviesAward.forEach(item ->{
+            AwardDTO awardDTO = null;
+            
+            String[] producer = item.getProducers().replace(" and ", ",").split(",");
+            
+            for (String pr : producer) {
+            	if(map.containsKey(pr)){
+            		 	awardDTO = map.get(pr);
+                	if(null != awardDTO.getFollowingWin()){
+                		awardDTO.setPreviousWin(awardDTO.getFollowingWin());
+                		awardDTO.setFollowingWin(item.getYear());
+                		awardDTO.setInterval(awardDTO.getFollowingWin() - awardDTO.getPreviousWin());
+                        map.replace(pr,awardDTO);
+                	} else {
+                		awardDTO.setFollowingWin(item.getYear());
+                		awardDTO.setInterval(awardDTO.getFollowingWin() - awardDTO.getPreviousWin());
+                        map.replace(pr,awardDTO);
+                	}
+                	
+                } else {
+                    awardDTO = new AwardDTO();
+                    awardDTO.setProducer(pr);
+                    awardDTO.setPreviousWin(item.getYear());
+                    map.put(pr, awardDTO);
+                }            
+
+			}
+
+            
         });
         return new ArrayList<>(map.values());
     }
@@ -107,7 +155,7 @@ public class MovieService {
                 } else {
                 	
                     if (response.getMin().get(0).getInterval() > item.getInterval()) {
-                        response.getMin().remove(0);
+                    	response.setMin(new ArrayList<>());
                         response.getMin().add(item);
                     } else if (response.getMin().get(0).getInterval().equals(item.getInterval())) {
                         response.getMin().add(item);
@@ -118,7 +166,7 @@ public class MovieService {
                     response.getMax().add(item);
                 } else {
                     if (response.getMax().get(0).getInterval() < item.getInterval()) {
-                        response.getMax().remove(0);
+                        response.setMax(new ArrayList<>());
                         response.getMax().add(item);
                     } else if (response.getMax().get(0).getInterval().equals(item.getInterval())) {
                         response.getMax().add(item);

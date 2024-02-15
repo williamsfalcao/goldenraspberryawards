@@ -11,10 +11,10 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Objects;
 
 @RestController
-@RequestMapping(value = "/awards")
-public class AwardController {
+@RequestMapping(value = "/studios")
+public class StudioController {
 
-    public AwardController(MovieService movieService) {
+    public StudioController(MovieService movieService) {
         this.movieService = movieService;
     }
 
@@ -23,11 +23,11 @@ public class AwardController {
     @GetMapping
     ResponseEntity<ResponseDTO> listAward() {
 
-        ResponseDTO response = movieService.listAwards();
+        ResponseDTO response = movieService.listStudios();
 
         if (Objects.isNull(response)) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
-        return ResponseEntity.ok(movieService.listAwards());
+        return ResponseEntity.ok(response);
     }
 }
